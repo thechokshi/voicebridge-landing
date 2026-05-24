@@ -12,6 +12,10 @@
 <meta name="twitter:title" content="VoiceBridge — Speak freely. In your language. At 3am.">
 <meta name="twitter:description" content="India's first multilingual AI mental health companion. Try it live — just speak.">
 <meta name="theme-color" content="#0A0A16">
+<meta property="og:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><rect width='1200' height='630' fill='%230A0A16'/><ellipse cx='600' cy='315' rx='600' ry='315' fill='%237B4FD4' opacity='0.1'/><text x='80' y='110' font-family='sans-serif' font-size='48' font-weight='bold' fill='%23C8A8E9'>VoiceBridge</text><rect x='524' y='230' width='14' height='70' rx='7' fill='%237B4FD4'/><rect x='550' y='200' width='14' height='130' rx='7' fill='%23C8A8E9'/><rect x='576' y='180' width='14' height='160' rx='7' fill='%237B4FD4'/><rect x='602' y='195' width='14' height='130' rx='7' fill='%23C8A8E9'/><rect x='628' y='225' width='14' height='80' rx='7' fill='%237B4FD4'/><text x='600' y='415' font-family='sans-serif' font-size='42' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>Speak freely. In your language. At 3am.</text><text x='600' y='472' font-family='sans-serif' font-size='22' fill='%23C8A8E9' text-anchor='middle'>India's first multilingual AI mental health companion</text></svg>">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='630'><rect width='1200' height='630' fill='%230A0A16'/><ellipse cx='600' cy='315' rx='600' ry='315' fill='%237B4FD4' opacity='0.1'/><text x='80' y='110' font-family='sans-serif' font-size='48' font-weight='bold' fill='%23C8A8E9'>VoiceBridge</text><rect x='524' y='230' width='14' height='70' rx='7' fill='%237B4FD4'/><rect x='550' y='200' width='14' height='130' rx='7' fill='%23C8A8E9'/><rect x='576' y='180' width='14' height='160' rx='7' fill='%237B4FD4'/><rect x='602' y='195' width='14' height='130' rx='7' fill='%23C8A8E9'/><rect x='628' y='225' width='14' height='80' rx='7' fill='%237B4FD4'/><text x='600' y='415' font-family='sans-serif' font-size='42' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'>Speak freely. In your language. At 3am.</text><text x='600' y='472' font-family='sans-serif' font-size='22' fill='%23C8A8E9' text-anchor='middle'>India's first multilingual AI mental health companion</text></svg>">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230A0A16'/><rect x='6' y='12' width='3' height='8' rx='1.5' fill='%237B4FD4'/><rect x='11' y='8' width='3' height='16' rx='1.5' fill='%23C8A8E9'/><rect x='16' y='5' width='3' height='22' rx='1.5' fill='%237B4FD4'/><rect x='21' y='8' width='3' height='16' rx='1.5' fill='%23C8A8E9'/><rect x='26' y='12' width='3' height='8' rx='1.5' fill='%237B4FD4'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +25,8 @@
     --deep: #0A0A16; --surface: #12121F; --card: #1A1A2E;
     --purple: #7B4FD4; --purple-light: #C8A8E9;
     --purple-dim: rgba(123,79,212,0.15); --purple-border: rgba(123,79,212,0.3);
-    --white: #FFFFFF; --muted: rgba(255,255,255,0.45); --faint: rgba(255,255,255,0.08);
+    --white: #FFFFFF; --muted: rgba(255,255,255,0.55); --faint: rgba(255,255,255,0.08);
+    --crisis: #D4537E; --live: #5FCF82;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
@@ -172,6 +177,55 @@
   .try-hint-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); animation: pulse 2s ease-in-out infinite; }
   .try-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 0.5rem; }
 
+  /* ── Scroll reveal ── */
+  .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; transition: none !important; } }
+
+  /* ── Skip nav ── */
+  .skip-nav { position: absolute; top: -40px; left: 1rem; background: var(--purple); color: var(--white); padding: 8px 16px; border-radius: 0 0 8px 8px; font-size: 14px; text-decoration: none; z-index: 999; transition: top 0.2s; }
+  .skip-nav:focus { top: 0; }
+
+  /* ── Live visitor badge ── */
+  .live-badge { margin-top: 0.75rem; animation-delay: 0.1s; }
+
+  /* ── Iframe placeholder ── */
+  .iframe-placeholder { height: 380px; display: flex; align-items: center; justify-content: center; background: var(--card); border-radius: 20px; }
+  .ifp-inner { text-align: center; }
+  .ifp-waveform { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 1.5rem; }
+  .ifp-waveform .w-bar { width: 4px; border-radius: 3px; background: var(--purple); animation: waveanim 1.4s ease-in-out infinite; }
+  .ifp-waveform .w-bar:nth-child(1){height:14px;animation-delay:0s} .ifp-waveform .w-bar:nth-child(2){height:28px;animation-delay:0.1s} .ifp-waveform .w-bar:nth-child(3){height:44px;animation-delay:0.2s} .ifp-waveform .w-bar:nth-child(4){height:28px;animation-delay:0.1s} .ifp-waveform .w-bar:nth-child(5){height:14px;animation-delay:0s}
+  .ifp-text { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--purple-light); margin-bottom: 0.4rem; }
+  .ifp-sub { font-size: 13px; color: var(--muted); margin-bottom: 1.5rem; }
+
+  /* ── Crisis callout ── */
+  .crisis-callout { margin: 0 2.5rem 0; padding: 2rem 2rem; background: rgba(212,83,126,0.07); border: 1px solid rgba(212,83,126,0.3); border-radius: 16px; text-align: center; }
+  .crisis-inner { max-width: 600px; margin: 0 auto; }
+  .crisis-icon { font-size: 26px; margin-bottom: 0.6rem; }
+  .crisis-head { font-family: 'Syne', sans-serif; font-size: 19px; font-weight: 700; color: var(--crisis); margin-bottom: 0.5rem; }
+  .crisis-body { font-size: 14px; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+  .crisis-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .crisis-btn { display: inline-block; text-decoration: none; padding: 10px 22px; border-radius: 24px; font-size: 14px; font-weight: 500; color: var(--white); background: var(--crisis); border: none; cursor: pointer; transition: opacity 0.2s; font-family: 'DM Sans', sans-serif; }
+  .crisis-btn:hover { opacity: 0.85; }
+
+  /* ── Limits / transparency block ── */
+  .limits-block { margin-top: 2rem; background: var(--card); border: 0.5px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 1.75rem 2rem; }
+  .limits-inner { display: flex; flex-direction: column; gap: 1rem; margin-top: 0.75rem; }
+  .limit-item { display: flex; gap: 1rem; align-items: flex-start; font-size: 14px; color: var(--muted); line-height: 1.65; }
+  .limit-item strong { color: rgba(255,255,255,0.7); }
+  .limit-item a { color: var(--crisis); text-decoration: none; }
+  .limit-item a:hover { text-decoration: underline; }
+  .limit-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+
+  /* ── Feedback toast ── */
+  .feedback-toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--card); border: 0.5px solid var(--purple-border); border-radius: 16px; padding: 1.25rem 1.5rem; z-index: 200; max-width: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.45); opacity: 0; transform: translateY(20px); transition: opacity 0.4s, transform 0.4s; pointer-events: none; }
+  .feedback-toast.show { opacity: 1; transform: none; pointer-events: all; }
+  .ft-question { font-size: 14px; font-weight: 500; color: var(--white); margin-bottom: 0.75rem; }
+  .ft-btns { display: flex; gap: 7px; flex-wrap: wrap; }
+  .ft-btn { background: var(--purple-dim); border: 0.5px solid var(--purple-border); color: var(--purple-light); font-size: 12px; padding: 6px 11px; border-radius: 20px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s; }
+  .ft-btn:hover { background: rgba(123,79,212,0.3); }
+  .ft-confirm { font-size: 13px; color: var(--muted); text-align: center; padding: 0.25rem 0; }
+
   @media(max-width:600px) {
     nav { padding: 1rem 1.25rem; } .nav-links { display: none; }
     .hero { padding: 4rem 1.25rem 3rem; }
@@ -183,11 +237,16 @@
     .try-section { padding: 3.5rem 1.25rem; }
     .try-frame-wrap iframe { height: 340px !important; }
     .try-frame-wrap { padding: 8px; }
+    .crisis-callout { margin: 0 1.25rem; }
+    .crisis-btns { flex-direction: column; align-items: center; }
+    .feedback-toast { right: 0.75rem; left: 0.75rem; max-width: none; }
+    .iframe-placeholder { height: 340px; }
   }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
+<a class="skip-nav" href="#try">Skip to live demo</a>
 
 <nav>
   <div class="logo">Voice<span>Bridge</span></div>
@@ -198,13 +257,14 @@
     <a href="#languages">Languages</a>
     <a href="#asha">Meet Asha</a>
   </div>
-  <button class="nav-btn" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it live</button>
+  <button class="nav-btn" aria-label="Try VoiceBridge live" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it live</button>
 </nav>
 
 <section class="hero">
   <div class="hero-orb"></div>
   <div class="hero-orb2"></div>
   <div class="badge"><div class="badge-dot"></div>India's first multilingual AI mental health companion</div>
+  <div class="badge live-badge"><div class="badge-dot" style="background:var(--live)"></div><span id="online-count">1</span>&nbsp;speaking with VoiceBridge now</div>
   <div class="waveform" aria-hidden="true">
     <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
     <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
@@ -212,11 +272,11 @@
   </div>
   <h1>Speak freely.<br><em class="lang-cycle" id="lang-cycle">In your language.</em><br>At 3am.</h1>
   <p class="hero-sub">A voice AI that listens, understands, and responds in <em class="hl">any language you speak</em> — Marathi, Hindi, Tamil, and 19 more. No appointments. No judgment. Always there.</p>
-  <button class="hero-cta" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it now — it's free</button>
+  <button class="hero-cta" aria-label="Try VoiceBridge live" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it now — it's free</button>
   <p class="hero-note">No signup needed &nbsp;·&nbsp; Just speak &nbsp;·&nbsp; Any language</p>
 </section>
 
-<div class="stats-bar">
+<div class="stats-bar reveal">
   <div class="stat-item"><div class="stat-num">200M+</div><div class="stat-label">Indians who need mental health support</div></div>
   <div class="stat-item"><div class="stat-num">&lt;1%</div><div class="stat-label">who currently get access to care</div></div>
   <div class="stat-item"><div class="stat-num">22</div><div class="stat-label">official languages, all supported</div></div>
@@ -225,22 +285,38 @@
 
 <!-- TRY IT LIVE SECTION -->
 <div class="try-section" id="try">
-  <div class="try-inner">
+  <div class="try-inner reveal">
     <div class="section-eyebrow" style="text-align:center">Try it live</div>
     <h2 class="section-h" style="text-align:center;max-width:640px;margin:0 auto 1rem">Speak to VoiceBridge.<br>Right now. In your language.</h2>
     <p class="section-sub" style="text-align:center;margin:0 auto 2.5rem">Press play. Allow microphone. Say anything in any language. This is the real thing — no signup, no setup.</p>
-    <div class="try-frame-wrap">
+    <div class="try-frame-wrap" id="demo-frame-container">
       <div class="try-pulse"></div>
-      <iframe
-        src="https://app.toughtongueai.com/embed/minimal/6a1149789c77a1ee11bc546f?bg=%231A1A2E&theme=dark&buttonColor=%237B4FD4&scenarioNameColor=%23C8A8E9&hidePoweredBy=true&countdown=false&pulse=true&buttonStopLabel=End+session"
-        width="100%"
-        height="380px"
-        frameborder="0"
-        allow="microphone"
-      ></iframe>
+      <div class="iframe-placeholder" id="iframe-placeholder">
+        <div class="ifp-inner">
+          <div class="ifp-waveform" aria-hidden="true">
+            <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+            <div class="w-bar"></div><div class="w-bar"></div>
+          </div>
+          <div class="ifp-text">VoiceBridge</div>
+          <div class="ifp-sub">Voice AI is loading as you scroll&hellip;</div>
+        </div>
+      </div>
     </div>
     <div class="try-hint"><span class="try-hint-dot"></span> Press play and start speaking</div>
     <p class="try-note">🔒 Your voice is processed in real-time and never stored. Browser microphone access required.</p>
+  </div>
+</div>
+
+<!-- CRISIS CALLOUT -->
+<div class="crisis-callout" style="margin-top:2rem;margin-bottom:2rem">
+  <div class="crisis-inner">
+    <div class="crisis-icon">⚠️</div>
+    <h3 class="crisis-head">In crisis? Don't use VoiceBridge alone.</h3>
+    <p class="crisis-body">If you're having thoughts of self-harm, please call now.<br>A real human will answer 24/7 — free, confidential, no judgment.</p>
+    <div class="crisis-btns">
+      <a class="crisis-btn" href="tel:9152987821" id="btn-icall">📞 iCall — 9152 987 821</a>
+      <a class="crisis-btn" href="tel:18602662345" id="btn-vandrevala">📞 Vandrevala — 1860 266 2345</a>
+    </div>
   </div>
 </div>
 
@@ -249,21 +325,21 @@
   <h2 class="section-h">Simple as a phone call.<br>Powerful as therapy.</h2>
   <p class="section-sub">Three steps. Your language. Your pace. No appointments needed.</p>
   <div class="steps">
-    <div class="step">
+    <div class="step reveal">
       <div class="step-num">1</div>
       <div>
         <div class="step-title">Open VoiceBridge and speak</div>
         <div class="step-desc">Say anything — in <em style="color:var(--purple-light);font-style:normal">any language</em>. Hindi, Marathi, Tamil, Telugu, Bengali. Our AI detects it instantly and responds naturally in the same tongue. No setup. No selection. Just speak.</div>
       </div>
     </div>
-    <div class="step">
+    <div class="step reveal">
       <div class="step-num">2</div>
       <div>
         <div class="step-title">AI listens and responds with empathy</div>
         <div class="step-desc">Gentle, CBT-guided conversations. It asks the right questions, reflects what you're feeling, and remembers what you said last week. Your story builds over time.</div>
       </div>
     </div>
-    <div class="step">
+    <div class="step reveal">
       <div class="step-num">3</div>
       <div>
         <div class="step-title">Grow. Track. Get help when you need it.</div>
@@ -277,40 +353,50 @@
   <div class="section-eyebrow">Features</div>
   <h2 class="section-h">Built for real humans,<br>not just one kind of speaker.</h2>
   <div class="features-grid">
-    <div class="feat">
+    <div class="feat reveal">
       <div class="feat-icon">🌐</div>
       <div class="feat-title">Any language, automatically</div>
       <div class="feat-desc">Speak in <em style="color:var(--purple-light);font-style:normal">your</em> language — detected the moment you open your mouth. No setup, no selection.</div>
     </div>
-    <div class="feat">
+    <div class="feat reveal">
       <div class="feat-icon">🌱</div>
       <div class="feat-title">Mood garden</div>
       <div class="feat-desc">Your emotional journey lives as a plant — Asha — named by you. Good days make her bloom. Rough days she survives. She never dies.</div>
     </div>
-    <div class="feat">
+    <div class="feat reveal">
       <div class="feat-icon">🔥</div>
       <div class="feat-title">Streak system</div>
       <div class="feat-desc">7 days of check-ins earns your consistency badge. Milestones celebrate every act of courage — "You've opened up 10 times. That matters."</div>
     </div>
-    <div class="feat">
+    <div class="feat reveal">
       <div class="feat-icon">💡</div>
       <div class="feat-title">Personal insights</div>
       <div class="feat-desc">After 30 days, AI reveals YOUR patterns. "You feel worst on Sundays. Here's why that might be."</div>
     </div>
-    <div class="feat">
+    <div class="feat reveal">
       <div class="feat-icon">🔒</div>
       <div class="feat-title">Your story, your control</div>
       <div class="feat-desc">Erase any conversation instantly. Choose what's remembered. Your data belongs to you — not us, not ever.</div>
     </div>
-    <div class="feat">
+    <div class="feat reveal">
       <div class="feat-icon">🤝</div>
       <div class="feat-title">Crisis escalation</div>
       <div class="feat-desc">When you need a real human, VoiceBridge connects you to iCall or Vandrevala Foundation — immediately, warmly, without hanging up.</div>
     </div>
   </div>
+
+  <!-- Honest about limits -->
+  <div class="limits-block reveal">
+    <div class="section-eyebrow">Honest about limits</div>
+    <div class="limits-inner">
+      <div class="limit-item"><span class="limit-icon">⚖️</span><div><strong>Not a licensed therapist.</strong> I'm an AI. For clinical care, I'll route you to a real professional.</div></div>
+      <div class="limit-item"><span class="limit-icon">🆘</span><div><strong>Not a crisis hotline.</strong> If you're in danger, call <a href="tel:9152987821">iCall</a> or <a href="tel:18602662345">Vandrevala</a> — real humans, 24/7.</div></div>
+      <div class="limit-item"><span class="limit-icon">🕐</span><div><strong>Not magic.</strong> I get better the more you talk. Day one feels different from day thirty.</div></div>
+    </div>
+  </div>
 </section>
 
-<div class="lang-section" id="languages">
+<div class="lang-section reveal" id="languages">
   <div class="section-eyebrow">Languages</div>
   <h2 class="section-h" style="max-width:500px;margin:0 auto 0.5rem">Your language is valid.<br>All of them.</h2>
   <p style="font-size:15px;color:var(--muted);margin-top:0.5rem">Speak in <em style="color:var(--purple-light);font-style:normal">any</em> of these — we respond in the same. Starting with India. Going global.</p>
@@ -330,7 +416,7 @@
     <h2 class="section-h">Meet Asha.<br>She grows with you.</h2>
     <p class="section-sub" style="margin-bottom:0">This is what your VoiceBridge dashboard looks like. Try the mood buttons. Hit simulate. Watch Asha respond.</p>
 
-    <div class="asha-demo">
+    <div class="asha-demo reveal">
       <div class="asha-header">
         <div>
           <div class="asha-title">VoiceBridge</div>
@@ -372,12 +458,12 @@
         </div>
         <div class="garden-info">
           <div class="garden-name">Asha — Day 23</div>
-          <div class="garden-desc" id="garden-desc">Your plant is thriving. Three good days in a row — she's starting to bloom. Keep talking.</div>
-          <div class="mood-btns">
-            <button class="mood-btn" onclick="setMood('great',this)">Great</button>
-            <button class="mood-btn" onclick="setMood('okay',this)">Okay</button>
-            <button class="mood-btn" onclick="setMood('low',this)">Low</button>
-            <button class="mood-btn" onclick="setMood('rough',this)">Rough</button>
+          <div class="garden-desc" id="garden-desc" aria-live="polite">Your plant is thriving. Three good days in a row — she's starting to bloom. Keep talking.</div>
+          <div class="mood-btns" role="group" aria-label="Choose mood">
+            <button class="mood-btn" onclick="setMood('great',this)" aria-label="Mood: great">Great</button>
+            <button class="mood-btn" onclick="setMood('okay',this)" aria-label="Mood: okay">Okay</button>
+            <button class="mood-btn" onclick="setMood('low',this)" aria-label="Mood: low">Low</button>
+            <button class="mood-btn" onclick="setMood('rough',this)" aria-label="Mood: rough">Rough</button>
           </div>
         </div>
       </div>
@@ -421,7 +507,7 @@
           <span style="font-size:15px">✨</span>
           <div class="insight-tag">Pattern detected</div>
         </div>
-        <div class="insight-text" id="insight-text">"You feel lowest on Sunday evenings. This is more common than you think — it even has a name. Let's talk about it."</div>
+        <div class="insight-text" id="insight-text" aria-live="polite">"You feel lowest on Sunday evenings. This is more common than you think — it even has a name. Let's talk about it."</div>
         <div class="insight-next" id="insight-next">Next insight unlocks at day 30 — 7 days away</div>
       </div>
 
@@ -435,7 +521,7 @@
 
 <div style="height:4rem"></div>
 
-<div class="callout">
+<div class="callout reveal">
   <div class="callout-q">"You don't need to speak one particular language<br>to deserve to be heard."</div>
   <div class="callout-attr">VoiceBridge — India-first. Global-ready.</div>
   <button class="callout-btn" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try VoiceBridge now</button>
@@ -451,11 +537,40 @@
 
 <footer>VoiceBridge &mdash; TETR Hackathon 2026 &nbsp;|&nbsp; Speak freely. In your language. At 3am.</footer>
 
+<!-- Feedback toast -->
+<div class="feedback-toast" id="feedback-toast" role="dialog" aria-label="Quick feedback" aria-live="polite">
+  <div class="ft-question">How did that feel?</div>
+  <div class="ft-btns">
+    <button class="ft-btn" data-rating="helpful">😌 Helpful</button>
+    <button class="ft-btn" data-rating="neutral">🤷 Neutral</button>
+    <button class="ft-btn" data-rating="confusing">😕 Confusing</button>
+    <button class="ft-btn" data-rating="hard">😢 Hard</button>
+  </div>
+</div>
+
 <script>
 // ── Supabase Analytics ──────────────────────────────────────
 const SUPABASE_URL = 'https://duqcoorkreppsukwyiiu.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Tzi62G_pgEyiAUqpuQ8G6Q_096YOx2Z';
 const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+// ── Supabase Presence — real-time visitor counter ──────────
+if (sb) {
+  const visitorChannel = sb.channel('voicebridge-live', {
+    config: { presence: { key: (typeof crypto !== 'undefined' && crypto.randomUUID) ? crypto.randomUUID() : Math.random().toString(36).slice(2) } }
+  });
+  visitorChannel
+    .on('presence', { event: 'sync' }, () => {
+      const count = Object.keys(visitorChannel.presenceState()).length;
+      const el = document.getElementById('online-count');
+      if (el) el.textContent = count;
+    })
+    .subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await visitorChannel.track({ joined_at: new Date().toISOString() });
+      }
+    });
+}
 
 // Lightweight event tracker
 function track(event, metadata = {}) {
@@ -471,6 +586,8 @@ function track(event, metadata = {}) {
 // Demo session tracking
 let demoSessionId = null;
 let demoStartTime = null;
+let feedbackShown = false;
+let feedbackTimer = null;
 
 function startDemoSession() {
   if (demoSessionId || !sb) return;
@@ -496,9 +613,77 @@ function endDemoSession() {
   navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
 }
 
-// Track page view
+// Feedback toast
+function showFeedbackToast() {
+  const toast = document.getElementById('feedback-toast');
+  if (!toast || feedbackShown) return;
+  toast.classList.add('show');
+}
+
+// Track page view + wire up IntersectionObserver + crisis/feedback listeners
 document.addEventListener('DOMContentLoaded', () => {
   track('page_view', { referrer: document.referrer || 'direct' });
+
+  // ── Scroll reveal ──
+  const revealObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+  // ── Lazy-load iframe ──
+  const placeholder = document.getElementById('iframe-placeholder');
+  const frameContainer = document.getElementById('demo-frame-container');
+  if (placeholder && frameContainer) {
+    const iframeObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        iframeObs.disconnect();
+        const iframe = document.createElement('iframe');
+        iframe.src = 'https://app.toughtongueai.com/embed/minimal/6a1149789c77a1ee11bc546f?bg=%231A1A2E&theme=dark&buttonColor=%237B4FD4&scenarioNameColor=%23C8A8E9&hidePoweredBy=true&countdown=false&pulse=true&buttonStopLabel=End+session';
+        iframe.width = '100%'; iframe.height = '380px'; iframe.frameBorder = '0'; iframe.allow = 'microphone';
+        iframe.style.cssText = 'display:block;background:var(--card);border:none;position:relative;z-index:1;';
+        placeholder.replaceWith(iframe);
+        track('demo_load');
+        // Attach session + feedback timer to new iframe
+        let hovered = false;
+        iframe.addEventListener('mouseenter', () => {
+          hovered = true;
+          if (!feedbackShown && !feedbackTimer) {
+            feedbackTimer = setTimeout(showFeedbackToast, 30000);
+          }
+        });
+        iframe.addEventListener('mouseleave', () => { hovered = false; });
+        window.addEventListener('blur', () => { if (hovered) startDemoSession(); }, { once: false });
+      });
+    }, { rootMargin: '200px' });
+    iframeObs.observe(frameContainer);
+  }
+
+  // ── Crisis button tracking ──
+  document.querySelectorAll('.crisis-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const hotline = btn.id === 'btn-icall' ? 'iCall' : 'Vandrevala';
+      track('crisis_click', { hotline });
+    });
+  });
+
+  // ── Feedback toast handlers ──
+  document.querySelectorAll('.ft-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const rating = btn.dataset.rating;
+      feedbackShown = true;
+      if (feedbackTimer) { clearTimeout(feedbackTimer); feedbackTimer = null; }
+      if (sb && demoSessionId) {
+        sb.from('demo_feedback').insert({ session_id: demoSessionId, rating }).then(() => {}).catch(() => {});
+      }
+      track('feedback_submit', { rating });
+      const toast = document.getElementById('feedback-toast');
+      toast.innerHTML = '<div class="ft-confirm">Thanks. That helps us learn. 💜</div>';
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    });
+  });
 });
 
 // Track nav clicks
