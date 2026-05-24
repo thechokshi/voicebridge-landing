@@ -185,6 +185,7 @@
     .try-frame-wrap { padding: 8px; }
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 
@@ -451,6 +452,81 @@
 <footer>VoiceBridge &mdash; TETR Hackathon 2026 &nbsp;|&nbsp; Speak freely. In your language. At 3am.</footer>
 
 <script>
+// ── Supabase Analytics ──────────────────────────────────────
+const SUPABASE_URL = 'https://duqcoorkreppsukwyiiu.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Tzi62G_pgEyiAUqpuQ8G6Q_096YOx2Z';
+const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+// Lightweight event tracker
+function track(event, metadata = {}) {
+  if (!sb) return;
+  sb.from('analytics').insert({
+    event,
+    metadata,
+    page_url: location.href,
+    user_agent: navigator.userAgent
+  }).then(() => {}).catch(() => {});
+}
+
+// Demo session tracking
+let demoSessionId = null;
+let demoStartTime = null;
+
+function startDemoSession() {
+  if (demoSessionId || !sb) return;
+  demoStartTime = new Date();
+  sb.from('demo_sessions').insert({
+    device: /Mobile|Android|iPhone/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+    language: navigator.language || 'unknown'
+  }).select('id').single().then(({ data }) => {
+    if (data) demoSessionId = data.id;
+  }).catch(() => {});
+  track('demo_start');
+}
+
+function endDemoSession() {
+  if (!demoSessionId || !sb || !demoStartTime) return;
+  const duration = Math.round((Date.now() - demoStartTime.getTime()) / 1000);
+  const body = JSON.stringify({
+    ended_at: new Date().toISOString(),
+    duration_seconds: duration
+  });
+  // Use sendBeacon for reliability on page unload
+  const url = `${SUPABASE_URL}/rest/v1/demo_sessions?id=eq.${demoSessionId}`;
+  navigator.sendBeacon(url, new Blob([body], { type: 'application/json' }));
+}
+
+// Track page view
+document.addEventListener('DOMContentLoaded', () => {
+  track('page_view', { referrer: document.referrer || 'direct' });
+});
+
+// Track nav clicks
+document.querySelectorAll('.nav-links a').forEach(a => {
+  a.addEventListener('click', () => track('nav_click', { target: a.getAttribute('href') }));
+});
+
+// Track CTA clicks
+document.querySelectorAll('.hero-cta, .callout-btn, .nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => track('cta_click', { button: btn.textContent.trim() }));
+});
+
+// Track demo interaction (iframe focus = user clicked into voice AI)
+const demoIframe = document.querySelector('.try-frame-wrap iframe');
+if (demoIframe) {
+  // Detect clicks into iframe via window blur while iframe is hovered
+  let iframeHovered = false;
+  demoIframe.addEventListener('mouseenter', () => { iframeHovered = true; });
+  demoIframe.addEventListener('mouseleave', () => { iframeHovered = false; });
+  window.addEventListener('blur', () => {
+    if (iframeHovered) startDemoSession();
+  });
+}
+
+// End session on page unload
+window.addEventListener('beforeunload', endDemoSession);
+
+// ── Language Cycle ──────────────────────────────────────────
 const langs = ['In your language.','अपनी भाषा में.','तुमच्या भाषेत.','உங்கள் மொழியில்.','మీ భాషలో.','ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ.','আপনার ভাষায়.','In your language.'];
 let li = 0;
 const lc = document.getElementById('lang-cycle');
@@ -471,6 +547,7 @@ const moods = {
   rough:{ pct:15, desc:"Thank you for still coming. Asha is quiet today — she's waiting with you.", b:0, col:'#3C3489' }
 };
 function setMood(m, btn) {
+  track('mood_click', { mood: m });
   document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const d = moods[m];
@@ -484,6 +561,7 @@ function setMood(m, btn) {
 let done = false;
 function simulate() {
   if(done){ showToast('Already checked in today'); return; }
+  track('simulate_click');
   done = true;
   document.getElementById('streak-num').textContent = '7';
   const dot = document.getElementById('today-dot');
