@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VoiceBridge — Speak freely. In your language. At 3am.</title>
+<meta name="description" content="India's first multilingual AI mental health companion. Voice AI that listens, understands, and responds in any of 22 languages. No appointments. No judgment. Always there.">
+<meta property="og:title" content="VoiceBridge — Speak freely. In your language. At 3am.">
+<meta property="og:description" content="A voice AI mental health companion that speaks Hindi, Marathi, Tamil, Telugu, and 18 more. Try it live — no signup needed.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VoiceBridge — Speak freely. In your language. At 3am.">
+<meta name="twitter:description" content="India's first multilingual AI mental health companion. Try it live — just speak.">
+<meta name="theme-color" content="#0A0A16">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230A0A16'/><rect x='6' y='12' width='3' height='8' rx='1.5' fill='%237B4FD4'/><rect x='11' y='8' width='3' height='16' rx='1.5' fill='%23C8A8E9'/><rect x='16' y='5' width='3' height='22' rx='1.5' fill='%237B4FD4'/><rect x='21' y='8' width='3' height='16' rx='1.5' fill='%23C8A8E9'/><rect x='26' y='12' width='3' height='8' rx='1.5' fill='%237B4FD4'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #0A0A16; --surface: #12121F; --card: #1A1A2E;
+    --purple: #7B4FD4; --purple-light: #C8A8E9;
+    --purple-dim: rgba(123,79,212,0.15); --purple-border: rgba(123,79,212,0.3);
+    --white: #FFFFFF; --muted: rgba(255,255,255,0.45); --faint: rgba(255,255,255,0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--deep); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 16px; line-height: 1.7; overflow-x: hidden; }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 2.5rem; background: rgba(10,10,22,0.92);
+    backdrop-filter: blur(12px); border-bottom: 0.5px solid var(--purple-border);
+  }
+  .logo { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: var(--purple-light); letter-spacing: -0.5px; }
+  .logo span { color: var(--purple); }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { color: var(--muted); font-size: 14px; text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--purple-light); }
+  .nav-btn { background: var(--purple); color: var(--white); border: none; padding: 9px 22px; border-radius: 24px; font-size: 14px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: opacity 0.2s; }
+  .nav-btn:hover { opacity: 0.85; }
+
+  .hero { min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 5rem 2rem 4rem; position: relative; overflow: hidden; }
+  .hero-orb { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 600px; height: 400px; background: radial-gradient(ellipse at center, rgba(123,79,212,0.12) 0%, transparent 65%); pointer-events: none; }
+  .hero-orb2 { position: absolute; top: 20%; left: 20%; width: 300px; height: 300px; background: radial-gradient(ellipse, rgba(200,168,233,0.05) 0%, transparent 70%); pointer-events: none; }
+
+  .badge { display: inline-flex; align-items: center; gap: 6px; background: var(--purple-dim); border: 0.5px solid var(--purple-border); color: var(--purple-light); font-size: 12px; padding: 6px 16px; border-radius: 20px; margin-bottom: 2rem; position: relative; z-index: 1; animation: fadeUp 0.6s ease both; }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+
+  .waveform { display: flex; align-items: center; gap: 5px; margin-bottom: 2rem; position: relative; z-index: 1; animation: fadeUp 0.7s ease 0.1s both; }
+  .w-bar { width: 4px; border-radius: 3px; background: var(--purple); animation: waveanim 1.4s ease-in-out infinite; }
+  .w-bar:nth-child(1){height:14px;animation-delay:0s} .w-bar:nth-child(2){height:24px;animation-delay:0.08s} .w-bar:nth-child(3){height:38px;animation-delay:0.16s} .w-bar:nth-child(4){height:52px;animation-delay:0.24s} .w-bar:nth-child(5){height:62px;animation-delay:0.32s} .w-bar:nth-child(6){height:52px;animation-delay:0.40s} .w-bar:nth-child(7){height:38px;animation-delay:0.32s} .w-bar:nth-child(8){height:24px;animation-delay:0.24s} .w-bar:nth-child(9){height:14px;animation-delay:0.16s}
+  @keyframes waveanim { 0%,100%{transform:scaleY(0.4);opacity:0.4} 50%{transform:scaleY(1);opacity:1} }
+
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: clamp(40px,7vw,68px); font-weight: 800; line-height: 1.08; letter-spacing: -2px; color: var(--white); margin-bottom: 1.25rem; position: relative; z-index: 1; max-width: 700px; animation: fadeUp 0.7s ease 0.15s both; }
+  .hero h1 em { color: var(--purple-light); font-style: normal; }
+  .hero h1 .lang-cycle { color: var(--purple-light); display: inline-block; min-width: 260px; }
+  .hero-sub { font-size: 17px; color: var(--muted); max-width: 520px; line-height: 1.75; margin-bottom: 2.5rem; position: relative; z-index: 1; animation: fadeUp 0.7s ease 0.25s both; }
+  .hero-sub .hl { color: var(--purple-light); font-weight: 500; font-style: normal; }
+
+  .hero-cta { background: var(--purple); color: var(--white); border: none; padding: 14px 32px; border-radius: 28px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; white-space: nowrap; transition: opacity 0.2s; position: relative; z-index: 1; animation: fadeUp 0.7s ease 0.35s both; }
+  .hero-cta:hover { opacity: 0.85; }
+  .hero-note { font-size: 12px; color: rgba(255,255,255,0.25); margin-top: 12px; position: relative; z-index:1; animation: fadeUp 0.7s ease 0.45s both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+
+  .stats-bar { display: flex; justify-content: center; gap: 0; border-top: 0.5px solid var(--purple-border); border-bottom: 0.5px solid var(--purple-border); background: var(--surface); }
+  .stat-item { flex: 1; max-width: 200px; text-align: center; padding: 1.75rem 1rem; border-right: 0.5px solid var(--purple-border); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 32px; font-weight: 800; color: var(--purple-light); }
+  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+  .section { padding: 5rem 2.5rem; max-width: 900px; margin: 0 auto; }
+  .section-eyebrow { font-size: 11px; letter-spacing: 2.5px; color: var(--purple); text-transform: uppercase; margin-bottom: 1rem; font-weight: 500; }
+  .section-h { font-family: 'Syne', sans-serif; font-size: clamp(28px,4vw,42px); font-weight: 700; line-height: 1.15; letter-spacing: -1px; margin-bottom: 1rem; }
+  .section-sub { font-size: 16px; color: var(--muted); max-width: 520px; line-height: 1.75; }
+
+  .steps { display: flex; flex-direction: column; gap: 1px; margin-top: 3rem; }
+  .step { display: flex; gap: 1.5rem; align-items: flex-start; background: var(--card); border: 0.5px solid rgba(255,255,255,0.07); padding: 1.75rem 2rem; transition: border-color 0.2s; }
+  .step:first-child { border-radius: 16px 16px 0 0; } .step:last-child { border-radius: 0 0 16px 16px; }
+  .step:hover { border-color: var(--purple-border); }
+  .step-num { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: var(--purple-dim); border: 0.5px solid var(--purple); color: var(--purple-light); font-size: 14px; font-weight: 500; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; }
+  .step-title { font-size: 16px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+  .step-desc { font-size: 14px; color: var(--muted); line-height: 1.65; }
+
+  .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 1px; margin-top: 3rem; }
+  .feat { background: var(--card); padding: 2rem; border: 0.5px solid rgba(255,255,255,0.07); transition: border-color 0.2s, background 0.2s; }
+  .feat:first-child{border-radius:16px 0 0 0} .feat:nth-child(2){border-radius:0 16px 0 0} .feat:nth-child(5){border-radius:0 0 0 16px} .feat:last-child{border-radius:0 0 16px 0}
+  .feat:hover { border-color: var(--purple-border); background: rgba(123,79,212,0.06); }
+  .feat-icon { font-size: 24px; margin-bottom: 1rem; }
+  .feat-title { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 6px; }
+  .feat-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ASHA DEMO */
+  .asha-section { background: var(--surface); border-top: 0.5px solid var(--purple-border); border-bottom: 0.5px solid var(--purple-border); padding: 5rem 2.5rem; }
+  .asha-inner { max-width: 900px; margin: 0 auto; }
+  .asha-demo { background: #0D0D1A; border: 0.5px solid var(--purple-border); border-radius: 20px; padding: 2rem; margin-top: 3rem; }
+  .asha-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .asha-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--purple-light); }
+  .asha-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .asha-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--purple-dim); border: 1px solid var(--purple); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 500; color: var(--purple-light); font-family: 'Syne', sans-serif; }
+  .demo-label { font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.3); text-transform: uppercase; margin-bottom: 10px; }
+  .streak-row { display: flex; gap: 7px; align-items: center; margin-bottom: 1.5rem; }
+  .s-day { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .s-dot { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+  .s-dot.done { background: var(--purple); color: #fff; }
+  .s-dot.today { background: var(--purple-dim); border: 1.5px solid var(--purple); color: var(--purple-light); }
+  .s-dot.empty { background: rgba(255,255,255,0.05); border: 0.5px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.2); }
+  .s-lbl { font-size: 10px; color: rgba(255,255,255,0.3); }
+  .streak-badge { margin-left: auto; background: var(--purple-dim); border: 0.5px solid var(--purple-border); border-radius: 20px; padding: 6px 14px; text-align: center; }
+  .streak-num { font-family: 'Syne', sans-serif; font-size: 24px; font-weight: 800; color: var(--purple-light); }
+  .streak-lbl { font-size: 10px; color: rgba(255,255,255,0.4); }
+  .demo-divider { height: 0.5px; background: rgba(255,255,255,0.07); margin: 1.25rem 0; }
+  .garden-row { display: flex; gap: 1.25rem; align-items: flex-end; margin-bottom: 1rem; }
+  .plant-wrap { flex-shrink: 0; }
+  .garden-info { flex: 1; }
+  .garden-name { font-size: 15px; font-weight: 500; color: var(--purple-light); margin-bottom: 4px; }
+  .garden-desc { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
+  .mood-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+  .mood-btn { border: 0.5px solid rgba(255,255,255,0.15); background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); font-size: 12px; padding: 5px 12px; border-radius: 16px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s; }
+  .mood-btn:hover, .mood-btn.active { background: var(--purple-dim); border-color: var(--purple); color: var(--purple-light); }
+  .mood-week { display: flex; gap: 5px; margin-top: 10px; }
+  .mw-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .mw-bg { width: 100%; height: 44px; background: rgba(255,255,255,0.05); border-radius: 4px; display: flex; align-items: flex-end; overflow: hidden; }
+  .mw-fill { width: 100%; border-radius: 4px; transition: height 0.4s ease; }
+  .mw-lbl { font-size: 10px; color: rgba(255,255,255,0.3); }
+  .milestones-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .ms-card { background: rgba(255,255,255,0.03); border: 0.5px solid rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; display: flex; align-items: center; gap: 10px; transition: border-color 0.2s; }
+  .ms-card.unlocked { border-color: rgba(123,79,212,0.4); background: var(--purple-dim); }
+  .ms-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .ms-icon.u { background: var(--purple-dim); color: var(--purple-light); }
+  .ms-icon.l { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.2); }
+  .ms-title { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.6); }
+  .ms-card.unlocked .ms-title { color: var(--purple-light); }
+  .ms-sub { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 1px; }
+  .insight-card { background: var(--purple-dim); border: 0.5px solid var(--purple-border); border-radius: 12px; padding: 1rem; }
+  .insight-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .insight-tag { font-size: 10px; letter-spacing: 1.5px; color: var(--purple); text-transform: uppercase; }
+  .insight-text { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.6; font-style: italic; margin-bottom: 8px; }
+  .insight-next { font-size: 11px; color: rgba(255,255,255,0.3); }
+  .sim-btn { width: 100%; margin-top: 1.25rem; background: var(--purple-dim); border: 0.5px solid var(--purple-border); color: var(--purple-light); font-size: 13px; padding: 11px; border-radius: 10px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: background 0.2s; }
+  .sim-btn:hover { background: rgba(123,79,212,0.25); }
+  .toast-wrap { position: relative; }
+  .toast { position: absolute; top: -44px; left: 50%; transform: translateX(-50%); background: var(--purple); color: #fff; font-size: 13px; padding: 8px 18px; border-radius: 20px; white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 10; }
+  .toast.show { opacity: 1; }
+
+  .lang-section { background: var(--surface); padding: 4rem 2.5rem; text-align: center; border-top: 0.5px solid var(--purple-border); border-bottom: 0.5px solid var(--purple-border); }
+  .lang-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 2rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .chip { background: var(--purple-dim); border: 0.5px solid var(--purple-border); color: var(--purple-light); font-size: 13px; padding: 7px 16px; border-radius: 20px; }
+
+  .callout { background: var(--purple-dim); border: 0.5px solid var(--purple-border); border-radius: 20px; padding: 4rem 2rem; text-align: center; margin: 0 2.5rem 4rem; }
+  .callout-q { font-family: 'Syne', sans-serif; font-size: clamp(22px,3.5vw,34px); font-weight: 700; color: var(--purple-light); line-height: 1.3; letter-spacing: -0.5px; margin-bottom: 0.75rem; }
+  .callout-attr { font-size: 13px; color: var(--muted); margin-bottom: 1rem; }
+  .callout-btn { background: var(--purple); color: var(--white); border: none; padding: 14px 32px; border-radius: 28px; font-size: 15px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: opacity 0.2s; }
+  .callout-btn:hover { opacity: 0.85; }
+
+  .safety { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; padding: 1.5rem 2rem; border-top: 0.5px solid rgba(255,255,255,0.06); }
+  .safety-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: rgba(255,255,255,0.3); }
+  .safety-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--purple); flex-shrink: 0; }
+  footer { text-align: center; padding: 2rem; border-top: 0.5px solid rgba(255,255,255,0.06); font-size: 12px; color: rgba(255,255,255,0.2); }
+
+  .try-section { padding: 5rem 2.5rem; position: relative; overflow: hidden; }
+  .try-section::before { content: ''; position: absolute; top: 5%; left: 50%; transform: translateX(-50%); width: 1100px; height: 800px; background: radial-gradient(ellipse at center, rgba(123,79,212,0.22) 0%, rgba(123,79,212,0.08) 35%, transparent 70%); pointer-events: none; z-index: 0; filter: blur(30px); }
+  .try-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 200px; background: linear-gradient(to top, var(--deep), transparent); pointer-events: none; z-index: 1; }
+  .try-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 2; }
+  .try-frame-wrap { background: var(--card); border: 0.5px solid var(--purple-border); border-radius: 20px; padding: 0; position: relative; overflow: hidden; box-shadow: 0 0 60px rgba(123,79,212,0.2), 0 20px 60px rgba(0,0,0,0.4); }
+  .try-frame-wrap iframe { display: block; background: var(--card); position: relative; z-index: 1; border: none; }
+  .try-pulse { position: absolute; inset: -20px; border-radius: 32px; background: radial-gradient(ellipse at center, rgba(123,79,212,0.25), transparent 70%); z-index: -1; animation: borderpulse 4s ease-in-out infinite; pointer-events: none; }
+  @keyframes borderpulse { 0%,100%{opacity:0.5;transform:scale(1)} 50%{opacity:0.9;transform:scale(1.02)} }
+  .try-hint { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 1.5rem; font-size: 13px; color: var(--purple-light); opacity: 0.7; }
+  .try-hint-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--purple); animation: pulse 2s ease-in-out infinite; }
+  .try-note { text-align: center; font-size: 12px; color: var(--muted); margin-top: 0.5rem; }
+
+  @media(max-width:600px) {
+    nav { padding: 1rem 1.25rem; } .nav-links { display: none; }
+    .hero { padding: 4rem 1.25rem 3rem; }
+    .stats-bar { flex-wrap: wrap; } .stat-item { min-width: 45%; }
+    .section { padding: 3.5rem 1.25rem; } .asha-section { padding: 3.5rem 1.25rem; }
+    .callout { margin: 0 1.25rem 3rem; padding: 2.5rem 1.25rem; }
+    .milestones-grid { grid-template-columns: 1fr; }
+    .garden-row { flex-direction: column; align-items: center; }
+    .try-section { padding: 3.5rem 1.25rem; }
+    .try-frame-wrap iframe { height: 340px !important; }
+    .try-frame-wrap { padding: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Voice<span>Bridge</span></div>
+  <div class="nav-links">
+    <a href="#try">Try live</a>
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#languages">Languages</a>
+    <a href="#asha">Meet Asha</a>
+  </div>
+  <button class="nav-btn" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it live</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb"></div>
+  <div class="hero-orb2"></div>
+  <div class="badge"><div class="badge-dot"></div>India's first multilingual AI mental health companion</div>
+  <div class="waveform" aria-hidden="true">
+    <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+    <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+    <div class="w-bar"></div><div class="w-bar"></div><div class="w-bar"></div>
+  </div>
+  <h1>Speak freely.<br><em class="lang-cycle" id="lang-cycle">In your language.</em><br>At 3am.</h1>
+  <p class="hero-sub">A voice AI that listens, understands, and responds in <em class="hl">any language you speak</em> — Marathi, Hindi, Tamil, and 19 more. No appointments. No judgment. Always there.</p>
+  <button class="hero-cta" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try it now — it's free</button>
+  <p class="hero-note">No signup needed &nbsp;·&nbsp; Just speak &nbsp;·&nbsp; Any language</p>
+</section>
+
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">200M+</div><div class="stat-label">Indians who need mental health support</div></div>
+  <div class="stat-item"><div class="stat-num">&lt;1%</div><div class="stat-label">who currently get access to care</div></div>
+  <div class="stat-item"><div class="stat-num">22</div><div class="stat-label">official languages, all supported</div></div>
+  <div class="stat-item"><div class="stat-num">3am</div><div class="stat-label">when most people have no one to call</div></div>
+</div>
+
+<!-- TRY IT LIVE SECTION -->
+<div class="try-section" id="try">
+  <div class="try-inner">
+    <div class="section-eyebrow" style="text-align:center">Try it live</div>
+    <h2 class="section-h" style="text-align:center;max-width:640px;margin:0 auto 1rem">Speak to VoiceBridge.<br>Right now. In your language.</h2>
+    <p class="section-sub" style="text-align:center;margin:0 auto 2.5rem">Press play. Allow microphone. Say anything in any language. This is the real thing — no signup, no setup.</p>
+    <div class="try-frame-wrap">
+      <div class="try-pulse"></div>
+      <iframe
+        src="https://app.toughtongueai.com/embed/minimal/6a1149789c77a1ee11bc546f?bg=%231A1A2E&theme=dark&buttonColor=%237B4FD4&scenarioNameColor=%23C8A8E9&hidePoweredBy=true&countdown=false&pulse=true&buttonStopLabel=End+session"
+        width="100%"
+        height="380px"
+        frameborder="0"
+        allow="microphone"
+      ></iframe>
+    </div>
+    <div class="try-hint"><span class="try-hint-dot"></span> Press play and start speaking</div>
+    <p class="try-note">🔒 Your voice is processed in real-time and never stored. Browser microphone access required.</p>
+  </div>
+</div>
+
+<section class="section" id="how">
+  <div class="section-eyebrow">How it works</div>
+  <h2 class="section-h">Simple as a phone call.<br>Powerful as therapy.</h2>
+  <p class="section-sub">Three steps. Your language. Your pace. No appointments needed.</p>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Open VoiceBridge and speak</div>
+        <div class="step-desc">Say anything — in <em style="color:var(--purple-light);font-style:normal">any language</em>. Hindi, Marathi, Tamil, Telugu, Bengali. Our AI detects it instantly and responds naturally in the same tongue. No setup. No selection. Just speak.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">AI listens and responds with empathy</div>
+        <div class="step-desc">Gentle, CBT-guided conversations. It asks the right questions, reflects what you're feeling, and remembers what you said last week. Your story builds over time.</div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Grow. Track. Get help when you need it.</div>
+        <div class="step-desc">Watch your mood garden bloom with daily check-ins. Unlock insights about your patterns. When you need a real human, we connect you — warmly, immediately, without dropping you.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="features" style="padding-top:0">
+  <div class="section-eyebrow">Features</div>
+  <h2 class="section-h">Built for real humans,<br>not just one kind of speaker.</h2>
+  <div class="features-grid">
+    <div class="feat">
+      <div class="feat-icon">🌐</div>
+      <div class="feat-title">Any language, automatically</div>
+      <div class="feat-desc">Speak in <em style="color:var(--purple-light);font-style:normal">your</em> language — detected the moment you open your mouth. No setup, no selection.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🌱</div>
+      <div class="feat-title">Mood garden</div>
+      <div class="feat-desc">Your emotional journey lives as a plant — Asha — named by you. Good days make her bloom. Rough days she survives. She never dies.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔥</div>
+      <div class="feat-title">Streak system</div>
+      <div class="feat-desc">7 days of check-ins earns your consistency badge. Milestones celebrate every act of courage — "You've opened up 10 times. That matters."</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">💡</div>
+      <div class="feat-title">Personal insights</div>
+      <div class="feat-desc">After 30 days, AI reveals YOUR patterns. "You feel worst on Sundays. Here's why that might be."</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔒</div>
+      <div class="feat-title">Your story, your control</div>
+      <div class="feat-desc">Erase any conversation instantly. Choose what's remembered. Your data belongs to you — not us, not ever.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🤝</div>
+      <div class="feat-title">Crisis escalation</div>
+      <div class="feat-desc">When you need a real human, VoiceBridge connects you to iCall or Vandrevala Foundation — immediately, warmly, without hanging up.</div>
+    </div>
+  </div>
+</section>
+
+<div class="lang-section" id="languages">
+  <div class="section-eyebrow">Languages</div>
+  <h2 class="section-h" style="max-width:500px;margin:0 auto 0.5rem">Your language is valid.<br>All of them.</h2>
+  <p style="font-size:15px;color:var(--muted);margin-top:0.5rem">Speak in <em style="color:var(--purple-light);font-style:normal">any</em> of these — we respond in the same. Starting with India. Going global.</p>
+  <div class="lang-chips">
+    <span class="chip">Hindi</span><span class="chip">Marathi</span><span class="chip">Tamil</span>
+    <span class="chip">Telugu</span><span class="chip">Kannada</span><span class="chip">Bengali</span>
+    <span class="chip">Gujarati</span><span class="chip">Punjabi</span><span class="chip">Malayalam</span>
+    <span class="chip">Odia</span><span class="chip">Assamese</span><span class="chip">Urdu</span>
+    <span class="chip">Bhojpuri</span><span class="chip">Rajasthani</span><span class="chip">+ 8 more</span>
+  </div>
+</div>
+
+<!-- ASHA DASHBOARD SECTION -->
+<div class="asha-section" id="asha">
+  <div class="asha-inner">
+    <div class="section-eyebrow">Your journey</div>
+    <h2 class="section-h">Meet Asha.<br>She grows with you.</h2>
+    <p class="section-sub" style="margin-bottom:0">This is what your VoiceBridge dashboard looks like. Try the mood buttons. Hit simulate. Watch Asha respond.</p>
+
+    <div class="asha-demo">
+      <div class="asha-header">
+        <div>
+          <div class="asha-title">VoiceBridge</div>
+          <div class="asha-sub">Day 23 of your journey</div>
+        </div>
+        <div class="asha-avatar">A</div>
+      </div>
+
+      <div class="demo-label">Your streak</div>
+      <div class="streak-row">
+        <div class="s-day"><div class="s-dot done">✓</div><div class="s-lbl">Mon</div></div>
+        <div class="s-day"><div class="s-dot done">✓</div><div class="s-lbl">Tue</div></div>
+        <div class="s-day"><div class="s-dot done">✓</div><div class="s-lbl">Wed</div></div>
+        <div class="s-day"><div class="s-dot done">✓</div><div class="s-lbl">Thu</div></div>
+        <div class="s-day"><div class="s-dot done">✓</div><div class="s-lbl">Fri</div></div>
+        <div class="s-day"><div class="s-dot done">✓</div><div class="s-lbl">Sat</div></div>
+        <div class="s-day"><div class="s-dot today" id="today-dot">◷</div><div class="s-lbl">Today</div></div>
+        <div class="streak-badge">
+          <div class="streak-num" id="streak-num">6</div>
+          <div class="streak-lbl">day streak</div>
+        </div>
+      </div>
+
+      <div class="demo-divider"></div>
+      <div class="demo-label">Asha — your mood garden</div>
+      <div class="garden-row">
+        <div class="plant-wrap">
+          <svg width="90" height="90" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <rect x="42" y="76" width="16" height="20" rx="3" fill="#5F5E5A"/>
+            <rect x="44" y="60" width="12" height="30" rx="2" fill="#3B6D11"/>
+            <ellipse cx="50" cy="52" rx="22" ry="18" fill="#639922" id="leaf-main"/>
+            <ellipse cx="28" cy="58" rx="14" ry="10" fill="#639922" transform="rotate(-20 28 58)"/>
+            <ellipse cx="72" cy="58" rx="14" ry="10" fill="#639922" transform="rotate(20 72 58)"/>
+            <ellipse cx="50" cy="38" rx="10" ry="8" fill="#97C459"/>
+            <circle cx="50" cy="35" r="7" fill="#D4537E" id="bloom1" opacity="0"/>
+            <circle cx="38" cy="50" r="5" fill="#ED93B1" id="bloom2" opacity="0"/>
+            <circle cx="62" cy="50" r="5" fill="#ED93B1" id="bloom3" opacity="0"/>
+          </svg>
+        </div>
+        <div class="garden-info">
+          <div class="garden-name">Asha — Day 23</div>
+          <div class="garden-desc" id="garden-desc">Your plant is thriving. Three good days in a row — she's starting to bloom. Keep talking.</div>
+          <div class="mood-btns">
+            <button class="mood-btn" onclick="setMood('great',this)">Great</button>
+            <button class="mood-btn" onclick="setMood('okay',this)">Okay</button>
+            <button class="mood-btn" onclick="setMood('low',this)">Low</button>
+            <button class="mood-btn" onclick="setMood('rough',this)">Rough</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="demo-label" style="margin-top:12px">This week's mood</div>
+      <div class="mood-week">
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" style="height:75%;background:#7B4FD4"></div></div><div class="mw-lbl">M</div></div>
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" style="height:55%;background:#7B4FD4"></div></div><div class="mw-lbl">T</div></div>
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" style="height:85%;background:#7B4FD4"></div></div><div class="mw-lbl">W</div></div>
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" style="height:60%;background:#7B4FD4"></div></div><div class="mw-lbl">T</div></div>
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" style="height:90%;background:#7B4FD4"></div></div><div class="mw-lbl">F</div></div>
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" style="height:80%;background:#7B4FD4"></div></div><div class="mw-lbl">S</div></div>
+        <div class="mw-col"><div class="mw-bg"><div class="mw-fill" id="today-fill" style="height:0%;background:#C8A8E9"></div></div><div class="mw-lbl">S</div></div>
+      </div>
+
+      <div class="demo-divider"></div>
+      <div class="demo-label">Milestones</div>
+      <div class="milestones-grid">
+        <div class="ms-card unlocked">
+          <div class="ms-icon u">🎤</div>
+          <div><div class="ms-title">First words</div><div class="ms-sub">You spoke. That took courage.</div></div>
+        </div>
+        <div class="ms-card unlocked">
+          <div class="ms-icon u">🔥</div>
+          <div><div class="ms-title">7-day warrior</div><div class="ms-sub">A week of showing up.</div></div>
+        </div>
+        <div class="ms-card unlocked">
+          <div class="ms-icon u">❤️</div>
+          <div><div class="ms-title">Opened up 10x</div><div class="ms-sub">10 sessions. Real growth.</div></div>
+        </div>
+        <div class="ms-card" id="ms-unlock">
+          <div class="ms-icon l" id="ms-icon">🔒</div>
+          <div><div class="ms-title" id="ms-title">30-day insight</div><div class="ms-sub" id="ms-sub">7 days away. Keep going.</div></div>
+        </div>
+      </div>
+
+      <div class="demo-divider"></div>
+      <div class="demo-label">Your insights</div>
+      <div class="insight-card">
+        <div class="insight-row">
+          <span style="font-size:15px">✨</span>
+          <div class="insight-tag">Pattern detected</div>
+        </div>
+        <div class="insight-text" id="insight-text">"You feel lowest on Sunday evenings. This is more common than you think — it even has a name. Let's talk about it."</div>
+        <div class="insight-next" id="insight-next">Next insight unlocks at day 30 — 7 days away</div>
+      </div>
+
+      <div class="toast-wrap">
+        <div class="toast" id="toast"></div>
+        <button class="sim-btn" onclick="simulate()">▶ Simulate today's check-in</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="height:4rem"></div>
+
+<div class="callout">
+  <div class="callout-q">"You don't need to speak one particular language<br>to deserve to be heard."</div>
+  <div class="callout-attr">VoiceBridge — India-first. Global-ready.</div>
+  <button class="callout-btn" onclick="document.getElementById('try').scrollIntoView({behavior:'smooth'})">Try VoiceBridge now</button>
+</div>
+
+<div class="safety">
+  <div class="safety-item"><div class="safety-dot"></div>Not a therapy replacement</div>
+  <div class="safety-item"><div class="safety-dot"></div>Crisis escalation built in</div>
+  <div class="safety-item"><div class="safety-dot"></div>Your data, your control</div>
+  <div class="safety-item"><div class="safety-dot"></div>iCall & Vandrevala integrated</div>
+  <div class="safety-item"><div class="safety-dot"></div>CBT-guided conversations</div>
+</div>
+
+<footer>VoiceBridge &mdash; TETR Hackathon 2026 &nbsp;|&nbsp; Speak freely. In your language. At 3am.</footer>
+
+<script>
+const langs = ['In your language.','अपनी भाषा में.','तुमच्या भाषेत.','உங்கள் மொழியில்.','మీ భాషలో.','ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ.','আপনার ভাষায়.','In your language.'];
+let li = 0;
+const lc = document.getElementById('lang-cycle');
+setInterval(() => {
+  lc.style.opacity = '0';
+  lc.style.transition = 'opacity 0.4s';
+  setTimeout(() => {
+    li = (li+1) % langs.length;
+    lc.textContent = langs[li];
+    lc.style.opacity = '1';
+  }, 400);
+}, 2200);
+
+const moods = {
+  great:{ pct:95, desc:"You're glowing today. Asha is in full bloom — three flowers open.", b:1, col:'#D4537E' },
+  okay:{ pct:60, desc:"An okay day is still a day you showed up. Asha appreciates it.", b:0, col:'#7B4FD4' },
+  low:{ pct:35, desc:"Rough patches are part of it. Asha bends but never breaks.", b:0, col:'#534AB7' },
+  rough:{ pct:15, desc:"Thank you for still coming. Asha is quiet today — she's waiting with you.", b:0, col:'#3C3489' }
+};
+function setMood(m, btn) {
+  document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const d = moods[m];
+  document.getElementById('today-fill').style.height = d.pct+'%';
+  document.getElementById('today-fill').style.background = d.col;
+  document.getElementById('garden-desc').textContent = d.desc;
+  ['bloom1','bloom2','bloom3'].forEach((id,i) => {
+    document.getElementById(id).setAttribute('opacity', d.b && i===0 ? '1' : d.b ? '0.8' : '0');
+  });
+}
+let done = false;
+function simulate() {
+  if(done){ showToast('Already checked in today'); return; }
+  done = true;
+  document.getElementById('streak-num').textContent = '7';
+  const dot = document.getElementById('today-dot');
+  dot.textContent = '✓'; dot.className = 's-dot done';
+  document.getElementById('today-fill').style.height = '80%';
+  document.getElementById('today-fill').style.background = '#7B4FD4';
+  ['bloom1','bloom2','bloom3'].forEach(id => document.getElementById(id).setAttribute('opacity','0.9'));
+  document.getElementById('garden-desc').textContent = '7 days straight. Asha is in full bloom. So are you.';
+  const mc = document.getElementById('ms-unlock');
+  mc.className = 'ms-card unlocked';
+  document.getElementById('ms-icon').className = 'ms-icon u';
+  document.getElementById('ms-icon').textContent = '⭐';
+  document.getElementById('ms-title').textContent = '7-day streak';
+  document.getElementById('ms-sub').textContent = 'Consistency badge earned.';
+  document.getElementById('insight-text').textContent = '"You\'ve talked 7 days in a row. Your mood average is up 23% from week one. Something real is shifting."';
+  document.getElementById('insight-next').textContent = 'New pattern unlocked — you\'re on a roll.';
+  showToast('7-day streak unlocked ⭐');
+}
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+</script>
+</body>
+</html>
